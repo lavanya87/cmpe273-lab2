@@ -38,13 +38,33 @@ Login.prototype.login = function(_name, _email) {
 };
 
 /**
+ * Creates a new session id for an existing user.
+ */
+Login.prototype.newsession = function(sessionId) {
+  /*
+  * Recover the email-id and name of the user from the sessionMap
+  */
+  var _name =  this.sessionMap[sessionId].name;
+  var _email =  this.sessionMap[sessionId].email;  
+  /*
+  * Delete the old session id
+  */
+  delete this.sessionMap[sessionId];
+  var newsessionId = new Date().getTime();
+  this.sessionMap[newsessionId] = { name: _name, email: _email }
+  console.log('new session id ' + newsessionId + ' for login::' + _email);
+  return newsessionId;
+};
+/**
  * Logout from the server
  */ 
 Login.prototype.logout = function(sessionId) {
 	console.log('logout::' + sessionId);
+  
    /*
-	* TODO: Remove the given sessionId from the sessionMap
+	* Remove the given sessionId from the sessionMap
 	*/
+  delete this.sessionMap[sessionId];
 };
 
 // Export the Login class
